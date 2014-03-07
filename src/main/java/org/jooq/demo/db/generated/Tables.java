@@ -17,9 +17,4 @@ public class Tables {
 	 * The table EXAMPLE.USER
 	 */
 	public static final org.jooq.demo.db.generated.tables.UserTable USER = org.jooq.demo.db.generated.tables.UserTable.USER;
-
-	/**
-	 * The table EXAMPLE.GROUP
-	 */
-	public static final org.jooq.demo.db.generated.tables.GroupTable GROUP = org.jooq.demo.db.generated.tables.GroupTable.GROUP;
 }
