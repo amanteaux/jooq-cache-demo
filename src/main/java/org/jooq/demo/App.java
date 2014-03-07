@@ -22,18 +22,11 @@ public class App {
 	private final static Injector INJECTOR = Guice.createInjector(new DaoModule(), new ServiceModule());
 
 	public static void createTables() {
-		Connection connection = null;
-		try {
-			CachedConfiguration conf = INJECTOR.getInstance(CachedConfiguration.class);
-			connection = conf.connectionProvider().acquire();
+		CachedConfiguration conf = INJECTOR.getInstance(CachedConfiguration.class);
+		try(Connection connection = conf.connectionProvider().acquire()) {
 			RunScript.execute(connection, new InputStreamReader(App.class.getResourceAsStream("/database_init.sql")));
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-			}
 		}
 	}
 	
@@ -47,11 +40,6 @@ public class App {
         
         // authentication
         try {
-			userService.authenticate("jooq", "falsepw");
-		} catch (AuthentificationException e) {
-			System.out.println(e.getMessage());
-		}
-        try {
 			User userAuth = userService.authenticate("jooq", "demo");
 			System.out.println("User " + userAuth.getUserId() + " logged in");
 		} catch (AuthentificationException e) {
@@ -59,10 +47,6 @@ public class App {
 		}
         
         // search
-        System.out.println(userService.search("test", "test").size() + " user(s) found");
-        System.out.println(userService.search("de", "a").size() + " user(s) found");
-        System.out.println(userService.search("de", null).size() + " user(s) found");
-        System.out.println(userService.search("de", "jo").size() + " user(s) found");
         System.out.println(userService.search("demo", "jooq").size() + " user(s) found");
         
         // search use cache
