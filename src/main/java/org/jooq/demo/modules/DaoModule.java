@@ -11,23 +11,26 @@ import com.zaxxer.hikari.HikariConfig;
 
 public class DaoModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		// pool configuration (should be loaded from a config file)
-		HikariConfig config = new HikariConfig();
-		config.setMaximumPoolSize(100);
+	final CachedConfiguration configuration;
+	
+	public DaoModule(CachedConfiguration configuration) {
+		this.configuration = configuration;
+	}
+	
+	public DaoModule() {
+		// pool configuration
+		HikariConfig config = new HikariConfig(getClass().getResource("/hikari.properties").getFile());
 		config.setDataSourceClassName(JdbcDataSource.class.getName());
-		config.addDataSourceProperty("url", "jdbc:h2:mem:example");
-		config.addDataSourceProperty("user", "sa");
-		config.addDataSourceProperty("password", "");
 		
 		// dao configuration
-		final CachedConfiguration configuration = new DefaultCachedConfiguration();
+		configuration = new DefaultCachedConfiguration();
 		configuration.set(new DemoConnectionProvider(config));
 		configuration.set(SQLDialect.H2);
 		configuration.settings().setRenderSchema(false);
+	}
 
-		// mapping
+	@Override
+	protected void configure() {
 		bind(CachedConfiguration.class).toInstance(configuration);
 	}
 

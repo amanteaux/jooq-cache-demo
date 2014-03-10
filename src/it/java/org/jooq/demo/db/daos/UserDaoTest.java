@@ -4,22 +4,20 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.sql.SQLException;
 
-import org.jooq.CachedConfiguration;
+import org.jooq.demo.TestApp;
 import org.jooq.demo.db.beans.User;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 
-public class UserDaoTest {
+public class UserDaoTest extends TestApp {
 	
 	private UserDao userDao;
 	
 	@Before
 	public void init() throws SQLException {
-		CachedConfiguration configuration = TestUtils.cachedConfigurationInMemory();
-		TestUtils.initDb(configuration);
-		userDao = new UserDao(configuration);
+		userDao = injector().getInstance(UserDao.class);
 		userDao.insert(userA(), userB());
 	}
 	
