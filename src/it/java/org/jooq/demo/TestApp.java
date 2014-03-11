@@ -1,14 +1,12 @@
 package org.jooq.demo;
 
-import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import org.h2.jdbcx.JdbcDataSource;
-import org.h2.tools.RunScript;
 import org.jooq.CachedConfiguration;
 import org.jooq.SQLDialect;
 import org.jooq.cache.impl.DefaultCachedConfiguration;
+import org.jooq.demo.db.DbInit;
 import org.jooq.demo.db.DemoConnectionProvider;
 import org.jooq.demo.modules.DaoModule;
 import org.jooq.demo.modules.ServiceModule;
@@ -23,9 +21,13 @@ public abstract class TestApp {
 	private Injector injector;
 	
 	@Before
-	public void initTestApp() throws SQLException {
+	public void initTestApp() {
 		injector = Guice.createInjector(new DaoModule(cachedConfigurationInMemory()), new ServiceModule());
-		initDb(injector.getInstance(CachedConfiguration.class));
+		try(Connection connection = injector.getInstance(CachedConfiguration.class).connectionProvider().acquire()){
+			DbInit.init(connection);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	protected Injector injector() {
@@ -33,12 +35,6 @@ public abstract class TestApp {
 	}
 	
 	// internal
-	
-	private void initDb(CachedConfiguration configuration) throws SQLException {
-		Connection connection = configuration.connectionProvider().acquire();
-		RunScript.execute(connection, new InputStreamReader(App.class.getResourceAsStream("/database_init.sql")));
-		connection.close();
-	}
 	
 	// integration test should use an in-memory database
 	private CachedConfiguration cachedConfigurationInMemory() {

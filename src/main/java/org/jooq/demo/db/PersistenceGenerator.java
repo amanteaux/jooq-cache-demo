@@ -1,14 +1,12 @@
 package org.jooq.demo.db;
 
 import java.io.File;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.h2.tools.RunScript;
 import org.jooq.CachedConfiguration;
 import org.jooq.ConfigurationExtended;
 import org.jooq.DAO;
@@ -50,7 +48,7 @@ public class PersistenceGenerator extends JavaExtendedGenerator {
 	public static Connection initSqlSchema() {
 		try {
 			Connection connection = getConnection();
-			RunScript.execute(connection, new InputStreamReader(PersistenceGenerator.class.getResourceAsStream("/database_init.sql")));
+			DbInit.init(connection);
 			return connection;
 		} catch (SQLException e) {
 			e.printStackTrace();
