@@ -8,6 +8,9 @@ import org.jooq.demo.services.UserService;
 public class MicroBenchmark {
 
 	public static void main(String[] args) {
+		System.out.println("no row result query benchmark");
+		noRowResult();
+		
 		System.out.println("one row result query benchmark");
 		oneRowResult();
 		
@@ -15,6 +18,29 @@ public class MicroBenchmark {
 		thousandRowsResult();
 	}
 
+	private static void noRowResult() {
+		App app = new App();
+        UserService userService = app.injector().getInstance(UserService.class);
+        
+        // warm up
+		for(int i=0; i<20000;i++) {
+			userService.search("demo", "jooq");
+		}
+		
+		// micro benchmark
+		long start = System.currentTimeMillis();
+		for(int i=0; i<100000;i++) {
+			List<User> users = userService.search("demo", "jooq");
+			if(!users.isEmpty()) {
+				throw new RuntimeException("Oops");
+			}
+			if(i%10000 == 0 && i != 0) {
+				System.out.println( i + " query results fetched from cache");
+			}
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("Total time : " + (end -start));
+	}
 
 	private static void oneRowResult() {
 		App app = new App();
