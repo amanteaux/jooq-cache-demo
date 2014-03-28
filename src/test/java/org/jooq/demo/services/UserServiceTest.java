@@ -6,30 +6,32 @@ import org.jooq.cache.impl.DefaultCachedConfiguration;
 import org.jooq.demo.db.beans.User;
 import org.jooq.demo.db.daos.UserDao;
 import org.jooq.demo.exception.AuthentificationException;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.base.Objects;
 
 public class UserServiceTest {
+	
+	private UserService userService;
+	
+	@Before
+	public void init() {
+		userService = new UserService(mockUserDao(), mockPasswordService());
+	}
 
 	@Test
-	public void should_return_the_authenticated_user() throws AuthentificationException {
-		UserService userService = new UserService(mockUserDao(), mockPasswordService());
-		
+	public void should_return_the_authenticated_user_if_the_login_and_password_are_correct() throws AuthentificationException {
 		assertThat(userService.authenticate("testLogin", "testPassword")).isNotNull();
 	}
 	
 	@Test(expected=AuthentificationException.class)
-	public void should_throw_an_exception_because_the_password_does_not_match() throws AuthentificationException {
-		UserService userService = new UserService(mockUserDao(), mockPasswordService());
-		
+	public void should_throw_an_exception_if_the_password_does_not_match() throws AuthentificationException {
 		userService.authenticate("testLogin", "wrongPassword");
 	}
 	
 	@Test(expected=AuthentificationException.class)
-	public void should_throw_an_exception_because_the_login_does_not_exist() throws AuthentificationException {
-		UserService userService = new UserService(mockUserDao(), mockPasswordService());
-		
+	public void should_throw_an_exception_if_the_login_does_not_exist() throws AuthentificationException {
 		userService.authenticate("wrongLogin", "passwordWillNotBeUsed");
 	}
 	

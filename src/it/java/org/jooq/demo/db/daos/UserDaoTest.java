@@ -22,7 +22,7 @@ public class UserDaoTest extends TestApp {
 	}
 	
 	@Test
-	public void should_search_by_firstname() {
+	public void search_by_firstname() {
 		assertThat(userDao.search("z", null)).isEqualTo(ImmutableList.of());
 		
 		assertThat(userDao.search("j", null)).isEqualTo(ImmutableList.of(userA()));
@@ -33,13 +33,12 @@ public class UserDaoTest extends TestApp {
 		assertThat(userDao.search("RICKIE", null)).isEqualTo(ImmutableList.of(userB()));
 		assertThat(userDao.search("ie", null)).isEqualTo(ImmutableList.of(userB()));
 		
-		assertThat(userDao.search(null, null)).isEqualTo(ImmutableList.of(userA(), userB()));
 		assertThat(userDao.search("", null)).isEqualTo(ImmutableList.of(userA(), userB()));
 		assertThat(userDao.search("i", null)).isEqualTo(ImmutableList.of(userA(), userB()));
 	}
 	
 	@Test
-	public void should_search_by_lastname() {
+	public void search_by_lastname() {
 		assertThat(userDao.search(null, "z")).isEqualTo(ImmutableList.of());
 		
 		assertThat(userDao.search(null, "mu")).isEqualTo(ImmutableList.of(userA()));
@@ -50,13 +49,12 @@ public class UserDaoTest extends TestApp {
 		assertThat(userDao.search(null, "Pl")).isEqualTo(ImmutableList.of(userB()));
 		assertThat(userDao.search(null, "PLUMER")).isEqualTo(ImmutableList.of(userB()));
 		
-		assertThat(userDao.search(null, null)).isEqualTo(ImmutableList.of(userA(), userB()));
 		assertThat(userDao.search(null, "")).isEqualTo(ImmutableList.of(userA(), userB()));
 		assertThat(userDao.search(null, "u")).isEqualTo(ImmutableList.of(userA(), userB()));
 	}
 	
 	@Test
-	public void should_search_by_firstname_and_lastname() {
+	public void search_by_firstname_and_lastname() {
 		assertThat(userDao.search("z", "z")).isEqualTo(ImmutableList.of());
 		
 		assertThat(userDao.search("j", "mu")).isEqualTo(ImmutableList.of(userA()));
