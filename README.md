@@ -27,7 +27,7 @@ Define the DAO runtime configuration.
 
 ### App
 
-Initialize the application (mostly the dependency injection layer).
+Initialize the application (mainly the dependency injection layer).
 
 ### Demo
 
@@ -40,7 +40,7 @@ Some micro-benchmarks for Jooq Cache.
 ### UserServiceTest 
 
 An example of a Unit Test.
-It does not really depends on Jooq Cache but show how Unit Test should be written (as opposed to Integration Test).
+It does not really depends on Jooq Cache but show how Unit Test should be written (as opposed to Integration Test :).
 
 ### UserDaoTest
 
@@ -49,3 +49,6 @@ An example of an Integration Test to test a Jooq Cache DAO with a running databa
 ## Remarks
 
 I like the dependency injection framework Guice, however I think that Spring can do more or less the same.
+
+You may notice that in this demo Services are implemented without using interface. It enables to keep the code more concise and does not prevent to later create an interface that will replace the first implementation.
+That works fine in a "end" project, but if you are writing an API/framework you should use interfaces : it will be easier for your users to extended your code.
