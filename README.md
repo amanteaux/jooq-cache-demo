@@ -51,4 +51,4 @@ An example of an Integration Test to test a Jooq Cache DAO with a running databa
 I like the dependency injection framework Guice, however I think that Spring can do more or less the same.
 
 You may notice that in this demo Services are implemented without using interface. It enables to keep the code more concise and does not prevent to later create an interface that will replace the first implementation.
-That works fine in a "end" project, but if you are writing an API/framework you should use interfaces : it will be easier for your users to extended your code.
+That works fine in a "end" project (on which no one will depend), but if you are writing an API/framework you should use interfaces : it will be easier for your users to extend your code.
