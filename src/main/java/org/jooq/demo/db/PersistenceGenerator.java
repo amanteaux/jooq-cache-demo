@@ -40,8 +40,7 @@ public class PersistenceGenerator extends JavaExtendedGenerator {
 			Class.forName("org.h2.Driver");
 			return DriverManager.getConnection("jdbc:h2:mem:example;INIT=CREATE SCHEMA IF NOT EXISTS EXAMPLE\\;SET SCHEMA EXAMPLE", "sa", "");
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -51,8 +50,7 @@ public class PersistenceGenerator extends JavaExtendedGenerator {
 			DbInit.init(connection);
 			return connection;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 	
