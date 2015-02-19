@@ -58,10 +58,10 @@ public class PersistenceGenerator extends JavaExtendedGenerator {
 		Connection connection = initSqlSchema();
 
 		final PersistenceGenerator pg = new PersistenceGenerator(new DefaultExtendedGeneratorStrategy() {
-			@SuppressWarnings({ "unchecked" })
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public Class<? extends DAO<?,?,?>> getSuperDao() {
-				return (Class<? extends DAO<?, ?, ?>>) CachedDAOImpl.class;
+				return (Class) CachedDAOImpl.class;
 			}
 
 			@Override
